@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.localhost.app</string>
+    <key>NSAccessibilityUsageDescription</key>
+    <string>Localhost needs accessibility permissions to read your active window context.</string>
+    <key>NSAppleEventsUsageDescription</key>
+    <string>Localhost needs to control other applications to help you code.</string>
+    <key>LSUIElement</key>
+    <true/>
+</dict>
+</plist>
