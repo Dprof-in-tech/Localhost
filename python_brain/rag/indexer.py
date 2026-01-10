@@ -26,6 +26,21 @@ class Indexer:
         for ext in extensions:
             files.extend(root_path.rglob(ext))
             
+        # Ignore patterns
+        IGNORE_DIRS = {
+            "node_modules", ".git", "venv", ".venv", "__pycache__", 
+            "dist", "build", ".next", ".vscode", ".idea", "Pods"
+        }
+        
+        filtered_files = []
+        for file in files:
+            # Check if any part of the path is in IGNORE_DIRS
+            if any(part in IGNORE_DIRS for part in file.parts):
+                continue
+            filtered_files.append(file)
+            
+        files = filtered_files
+            
         data = []
         logging.info(f"Indexing {len(files)} files in {path}...")
         
@@ -58,6 +73,15 @@ class Indexer:
         # Tbl name based on path hash or fixed 'codebase' for MVP
         tbl = self.db.create_table("codebase", data=data, mode="overwrite")
         return {"status": "success", "message": f"Indexed {len(data)} chunks from {len(files)} files."}
+
+    def clear_index(self):
+        """Drop the current index"""
+        try:
+            self.db.drop_table("codebase")
+            return {"status": "success", "message": "Index cleared."}
+        except:
+            return {"status": "success", "message": "Index already empty."}
+
         
     def search(self, query: str, limit=5):
         """Semantic search"""

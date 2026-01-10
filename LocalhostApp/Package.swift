@@ -14,9 +14,11 @@ let package = Package(
         .executableTarget(
             name: "LocalhostApp",
             dependencies: [],
-            path: ".",
-            resources: [
-                .process("Info.plist")
+            path: "Sources",
+            // SPM automatically finds sources in subdirectories of 'path'
+            linkerSettings: [
+                .linkedFramework("Carbon"),
+                .linkedFramework("AppKit")
             ]
         )
     ]

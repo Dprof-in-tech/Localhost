@@ -6,6 +6,7 @@ struct FloatingBarView: View {
     @State private var isReasoning: Bool = false
     @State private var loadingText: String = ""
     @State private var loadingIndex: Int = 0
+    @State private var contextInfo: String = "None"
     @FocusState private var isFocused: Bool
     
     private let loadingPhrases = [
@@ -25,7 +26,7 @@ struct FloatingBarView: View {
         VStack(alignment: .leading, spacing: 0) {
             // Top Bar with Context and Close Button
             HStack {
-                Text("Context: None") // Placeholder for ContextGathering
+                Text("Context: \(contextInfo)")
                     .font(.caption)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
@@ -110,6 +111,7 @@ struct FloatingBarView: View {
         .animation(.spring(response: 0.3, dampingFraction: 0.8), value: response.isEmpty)
         .onAppear {
             isFocused = true
+            updateContext()
         }
         .onKeyPress(.escape) {
             closeWindow()
@@ -164,6 +166,14 @@ struct FloatingBarView: View {
         HotkeyManager.shared.hide()
     }
     
+    func updateContext() {
+        BridgeService.shared.getContext { context in
+            DispatchQueue.main.async {
+                self.contextInfo = context
+            }
+        }
+    }
+    
     func submit() {
         guard !input.isEmpty else { return }
         isReasoning = true
@@ -180,6 +190,7 @@ struct FloatingBarView: View {
             DispatchQueue.main.async {
                 self.isReasoning = false
                 self.response = result
+                self.updateContext() // Update context after query in case it changed
                 print("DEBUG: Response state updated. isEmpty: \(self.response.isEmpty), count: \(self.response.count)")
             }
         }

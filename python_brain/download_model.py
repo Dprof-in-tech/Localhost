@@ -1,8 +1,8 @@
 from huggingface_hub import snapshot_download
 import os
 
-model_id = "mlx-community/Qwen2.5-3B-Instruct-4bit"
-local_dir = os.path.expanduser("~/.localhost/models/qwen-2.5-3b-4bit")
+model_id = "mlx-community/Qwen3-4B-Instruct-2507-4bit"
+local_dir = os.path.expanduser("~/.localhost/models/qwen3-4b-2507-4bit")
 
 print(f"🧠 Downloading {model_id} to {local_dir}...")
 snapshot_download(

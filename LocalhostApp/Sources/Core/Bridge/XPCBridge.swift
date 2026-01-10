@@ -162,6 +162,22 @@ class BridgeService {
         callbacks.append(completion)
     }
     
+    func getContext(completion: @escaping (String) -> Void) {
+        guard process?.isRunning == true else {
+            completion("None")
+            return
+        }
+        
+        let message = BridgeMessage(
+            type: "get_context",
+            payload: Dict([:])
+        )
+        
+        print("SWIFT → PYTHON: Requesting context")
+        send(message)
+        callbacks.append(completion)
+    }
+    
     private func send(_ message: BridgeMessage) {
         guard let data = try? JSONEncoder().encode(message) else {
             print("ERROR: Failed to encode message")

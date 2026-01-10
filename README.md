@@ -8,7 +8,7 @@ Localhost is a powerful, local-first AI agent that lives on your Mac. It combine
 
 ## ✨ Features
 
-- **🧠 Local LLM Brain**: Runs `Qwen-2.5-3B-Instruct` (4-bit quantized) using `mlx-lm` for high performance on Apple Silicon.
+- **🧠 Local LLM Brain**: Runs `Qwen3-4B-Instruct` (4-bit quantized) using `mlx-lm` for high performance on Apple Silicon.
 - **🔦 Neural Spotlight UI**: A beautiful, floating search bar triggered by `Cmd+Shift+.` that sits above your apps.
 - **📚 RAG (Retrieval Augmented Generation)**: Index your local folders (`/index <path>`) to let the AI answer questions about your codebase.
 - **🕵️‍♂️ Agentic Capabilities**: An autonomous "Agent" that can reason and use tools:
@@ -65,6 +65,22 @@ Localhost is a powerful, local-first AI agent that lives on your Mac. It combine
 | `/find <pattern> <path>` | Manually search for files (or just ask the Agent to do it!). |
 | `/read <path>` | Read a specific file's content. |
 | `/ls <path>` | List directory contents. |
+
+## 🚀 New Feature: Draft Mode
+
+Localhost now includes **Draft Mode**, a new feature that allows you to propose file edits without immediately applying them.
+
+- **Draft Mode** enables safe, reversible editing of files.
+- You can propose changes to a file, review them, and apply them with a single command.
+- Supports both full file replacement and partial edits (search & replace).
+- Safe for experimentation and code review.
+
+### How to Use Draft Mode
+
+1. Type `/draft <path>` to initiate a draft edit.
+2. Enter your changes in the draft buffer.
+3. Review the proposed changes.
+4. Apply with `/approve` to finalize the edit.
 
 ## 🏗️ Project Structure
 
