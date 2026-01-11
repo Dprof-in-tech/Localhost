@@ -30,7 +30,20 @@ Localhost is a powerful, local-first AI agent that lives on your Mac. It combine
 *   Xcode 14+
 *   Python 3.10+
 
-### Installation
+### 📦 Installation
+
+#### 👩‍💻 For Users (No Coding Required)
+
+**Download:** [Localhost_v0.1.zip](release/Localhost_v0.1.zip)
+
+1.  **Unzip** the file.
+2.  **Run the Installer**:
+    Double-click `Install.command` to set up the AI Brain (Python environment & models).
+    *Tip: If it asks for permission, Right-Click > Open.*
+3.  **Install the App**:
+    Drag `Localhost.app` into your **Applications** folder.
+
+#### 👷‍♂️ For Developers (Build from Source)
 
 1.  **Clone the repository:**
     ```bash
@@ -39,18 +52,30 @@ Localhost is a powerful, local-first AI agent that lives on your Mac. It combine
     ```
 
 2.  **Run the Setup Script:**
-    This script creates the Python virtual environment, installs dependencies (MLX, Transformers, LanceDB), and downloads the model.
+    This script creates the Python virtual environment and installs dependencies (MLX, Transformers, LanceDB), and downloads the model.
     ```bash
-    chmod +x setup_env.sh
-    ./setup_env.sh
+    # We use the same script as the release
+    chmod +x release/Install.command
+    ./release/Install.command
     ```
 
 3.  **Build in Xcode:**
     *   Open `LocalhostApp/LocalhostApp.xcodeproj`.
-    *   Ensure the Signing Team is set in project settings.
+    *   **CRITICAL**: Go to target settings -> Signing & Capabilities. Ensure `LocalhostApp/Resources/Localhost.entitlements` is selected in "Code Signing Entitlements" (or manually add `LocalhostApp/Resources/Localhost.entitlements` to Build Settings). This disables the Sandbox so the app can see your files.
     *   Build and Run (`Cmd+R`).
 
-### Usage
+### 🔐 Setup & Permissions (Important)
+
+Localhost interacts deeply with your system to be helpful. You **must** grant these permissions on first run:
+
+1.  **Accessibility**:
+    *   Required for the Global Hotkey (`Cmd+Shift+.`) and reading your active window context.
+    *   *System Settings > Privacy & Security > Accessibility*.
+2.  **Full Disk Access**:
+    *   **CRITICAL**: Required for the Agent to search and index your projects (`/mdfind`). Without this, the Agent is blind to files outside its own folder.
+    *   *System Settings > Privacy & Security > Full Disk Access*.
+
+### 🚀 Usage
 
 1.  **Activate**: Press `Cmd+Shift+.` (Period) to toggle the floating bar.
 2.  **Chat**: Type any question (e.g., "Write a Python script to parse JSON").
@@ -61,10 +86,13 @@ Localhost is a powerful, local-first AI agent that lives on your Mac. It combine
 
 | Command | Description |
 | :--- | :--- |
-| `/index <path>` | Indexes a directory for RAG (Retrieval Augmented Generation). |
+| `/project <path>` | Switch the active project context (sandbox root). |
+| `/index .` | Index the current project for RAG (Search). |
 | `/find <pattern> <path>` | Manually search for files (or just ask the Agent to do it!). |
 | `/read <path>` | Read a specific file's content. |
 | `/ls <path>` | List directory contents. |
+| `/quit` | Quit the background app. |
+| `/reset` | Clear conversation memory and index. |
 
 ## 🚀 New Feature: Draft Mode
 
@@ -91,6 +119,7 @@ Localhost now includes **Draft Mode**, a new feature that allows you to propose 
     *   `inference/`: Model loading and generation.
     *   `rag/`: Vector database and indexing logic.
     *   `tools/`: File system tools (`find`, `read`, `ls`).
+*   `release/`: Installer scripts and packaged binaries.
 
 ## 📄 License
 

@@ -44,13 +44,6 @@ def handle_message(message):
         
         # 1. Legacy Commands (keep for speed)
         if text.startswith("/"):
-            if text == "/reset":
-                 return {"status": "success", "response": clear_context()}
-            if text.startswith("/ls "):
-                return {"status": "success", "response": str(fs_tool.list_directory(text[4:].strip()))}
-            if text.startswith("/read "):
-                return {"status": "success", "response": str(fs_tool.read_file(text[6:].strip()))}
-            if text.startswith("/find "):
                 parts = text[6:].split(" ", 1)
                 return {"status": "success", "response": str(fs_tool.find_files(parts[0], parts[1] if len(parts)>1 else "~"))}
             if text.startswith("/index "):

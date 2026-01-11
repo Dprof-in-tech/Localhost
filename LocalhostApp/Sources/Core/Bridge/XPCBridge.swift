@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 
 struct BridgeMessage: Codable {
     let type: String
@@ -64,24 +64,42 @@ class BridgeService {
         
         process = Process()
         
-        // Use the virtual environment's python
-        let venvPython = "/Users/prof/Documents/PROJECTS/Localhost/python_brain/venv/bin/python"
-        process?.executableURL = URL(fileURLWithPath: venvPython)
+        // Path Resolution Strategy:
+        // 1. Distribution Path (~/.localhost)
+        // 2. Development Path (Hardcoded Fallback)
         
-        // Point to our python main
-        // Assuming running from built product, we need to find the source for dev
-        // In this scaffold, we'll hardcode the path for the user's scratch dir
-        let pythonScript = "/Users/prof/Documents/PROJECTS/Localhost/python_brain/main.py"
+        let fileManager = FileManager.default
+        let home = fileManager.homeDirectoryForCurrentUser.path
         
-        process?.arguments = ["-u", pythonScript] // -u for unbuffered binary stdout
+        let distPython = "\(home)/.localhost/venv/bin/python"
+        let distScript = "\(home)/.localhost/python_brain/main.py"
+        
+        let devPython = "/Users/prof/Documents/PROJECTS/Localhost/python_brain/venv/bin/python"
+        let devScript = "/Users/prof/Documents/PROJECTS/Localhost/python_brain/main.py"
+        
+        var finalPython = ""
+        var finalScript = ""
+        
+        if fileManager.fileExists(atPath: distScript) {
+            print("Bridge: Using Distributed Backend at ~/.localhost")
+            finalPython = distPython
+            finalScript = distScript
+        } else {
+            print("Bridge: ~/.localhost not found. Falling back to Dev Path.")
+            finalPython = devPython
+            finalScript = devScript
+        }
+        
+        process?.executableURL = URL(fileURLWithPath: finalPython)
+        process?.arguments = ["-u", finalScript] // -u for unbuffered binary stdout
         
         process?.standardInput = inputPipe
         process?.standardOutput = outputPipe
         process?.standardError = errorPipe
         
         process?.environment = [
-            "PYTHONPATH": "/Users/prof/Documents/PROJECTS/Localhost/python_brain"
-            // "PATH" should inherit or be set if needed
+            "PYTHONPATH": (finalScript as NSString).deletingLastPathComponent,
+            "PATH": "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
         ]
         
         // Set up termination handler to clean up properly
@@ -209,6 +227,12 @@ class BridgeService {
             let responseText = result.response ?? result.message ?? "Unknown error"
             
             print("PYTHON → SWIFT (decoded): \(responseText)")
+            
+            if result.status == "shutdown" {
+                print("Bridge: Received shutdown signal. Terminating App.")
+                NSApplication.shared.terminate(nil)
+                return
+            }
             
             DispatchQueue.main.async {
                 if !self.callbacks.isEmpty {
