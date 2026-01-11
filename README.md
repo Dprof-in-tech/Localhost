@@ -4,7 +4,8 @@ Localhost is a powerful, local-first AI agent that lives on your Mac. It combine
 
 **Zero data leaves your machine.** Everything runs locally on Apple Silicon (M1/M2/M3).
 
-![Localhost Banner](https://via.placeholder.com/800x200?text=Localhost+AI+Agent)
+<img width="1024" height="434" alt="image" src="https://github.com/user-attachments/assets/46a4a4c7-6b21-4be9-808e-a7a67ebb6bd2" />
+
 
 ## ✨ Features
 
