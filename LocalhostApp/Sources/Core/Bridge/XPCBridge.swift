@@ -81,11 +81,13 @@ class BridgeService {
         var finalScript = ""
         
         if fileManager.fileExists(atPath: distScript) {
-            print("Bridge: Using Distributed Backend at ~/.localhost")
+            print("Bridge: ✅ Found Distributed Backend at \(distScript)")
             finalPython = distPython
             finalScript = distScript
         } else {
-            print("Bridge: ~/.localhost not found. Falling back to Dev Path.")
+            print("Bridge: ❌ ~/.localhost backend NOT found at: \(distScript)")
+            print("Bridge: Checking existence of parent dir: \(fileManager.fileExists(atPath: "\(home)/.localhost") ? "Exists" : "Missing")")
+            print("Bridge: Falling back to Dev Path (likely to fail on user machine): \(devScript)")
             finalPython = devPython
             finalScript = devScript
         }
