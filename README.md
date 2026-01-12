@@ -44,6 +44,16 @@ Localhost is a powerful, local-first AI agent that lives on your Mac. It combine
 3.  **Install the App**:
     Drag `Localhost.app` into your **Applications** folder.
 
+### ⚠️ Common Issue: "Unidentified Developer"
+
+Since this app is not signed by Apple (yet), macOS may block it.
+**If you see a warning that it "cannot be opened":**
+
+1.  Open **System Settings** > **Privacy & Security**.
+2.  Scroll down to the **Security** section.
+3.  You should see "Localhost was blocked...". Click **Open Anyway**.
+4.  (Or simply **Right-Click** the app and select **Open** to bypass this).
+
 #### 👷‍♂️ For Developers (Build from Source)
 
 1.  **Clone the repository:**

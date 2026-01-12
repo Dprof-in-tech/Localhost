@@ -10,6 +10,13 @@ STEP 2: INSTALL THE APP 📱
 --------------------------
 Drag 'Localhost.app' to your 'Applications' folder.
 
+TROUBLESHOOTING: "Unidentified Developer" Warning? ⚠️
+--------------------------------------------------
+If macOS says the app "cannot be opened" because the developer cannot be verified:
+1. Open System Settings > Privacy & Security.
+2. Scroll down and click "Open Anyway" next to Localhost.
+OR: Right-click the App and choose "Open".
+
 STEP 3: GRANT PERMISSIONS 🔐
 ----------------------------
 For Localhost to see your screen and search your files, you MUST enable:
