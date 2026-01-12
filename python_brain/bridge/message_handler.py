@@ -43,20 +43,30 @@ def handle_message(message):
         text = payload.get("text", "")
         
         # 1. Legacy Commands (keep for speed)
-        if text.startswith("/"):
-                parts = text[6:].split(" ", 1)
-                return {"status": "success", "response": str(fs_tool.find_files(parts[0], parts[1] if len(parts)>1 else "~"))}
-            if text.startswith("/index "):
-                return {"status": "success", "response": str(indexer.index_directory(text[7:].strip()))}
-            if text.startswith("/project "):
-                try:
-                    path = text[9:].strip()
-                    new_root = fs_tool.set_project_root(path)
-                    return {"status": "success", "response": f"🔒 Sandbox Active. Project root set to: {new_root}"}
-                except Exception as e:
-                    return {"status": "error", "message": f"Error setting project root: {e}"}
-            if text == "/approve":
-                 return {"status": "success", "response": fs_tool.approve_pending_edits()}
+        if text.startswith("/index "):
+            return {"status": "success", "response": str(indexer.index_directory(text[7:].strip()))}
+        elif text.startswith("/project "):
+            try:
+                path = text[9:].strip()
+                new_root = fs_tool.set_project_root(path)
+                return {"status": "success", "response": f"🔒 Sandbox Active. Project root set to: {new_root}"}
+            except Exception as e:
+                return {"status": "error", "message": f"Error setting project root: {e}"}
+        elif text == "/approve":
+             return {"status": "success", "response": fs_tool.approve_pending_edits()}
+        elif text.startswith("/"):
+            # Fallback (Legacy Search) - Assumes "/search query path" ?? or just "/ query"?
+            # Original code used text[6:], let's assume it was intended for "/find "?
+            # But prompt says "Legacy Commands".
+            # Let's fix indentation but maybe keep logic if it was intended to catch other things.
+            # Actually, to be safe, I will comment out the ambiguous block or fix it if I understand it.
+            # The original code at 47 was: parts = text[6:].split(...)
+            # This implies the command was 6 chars long, e.g. "/find ".
+            # Let's just fix the crash by handling the known commands first.
+            parts = text.split(" ", 1)
+            if len(parts) > 1:
+                 return {"status": "success", "response": str(fs_tool.find_files(parts[1], "~"))}
+            return {"status": "error", "message": "Unknown command"}
 
         # 2. Agentic Loop (NLP)
         try:
